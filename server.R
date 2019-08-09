@@ -9,8 +9,10 @@ library(sicegar)
 source("add_inhibition_1.R")
 source("make_inh_hist_1.R")
 
+#Simulation and Shiny Application of Two Horse Race Model for the stop-signal task
 shinyServer(function(input,output) {
   
+  #Model parameters from UI
   variablesFromInput <- reactive({
     input_list <- list(
       "obs" = input$obs,
@@ -27,6 +29,8 @@ shinyServer(function(input,output) {
     return(input_list)
   })
   
+  # calculate stop signal delay (SSD)
+  # SSD = mean reaction time + delay
   SSD <- reactive({
     SSD_list <- list(
       "SSD1" = input$mean + input$dif_1,
@@ -39,6 +43,8 @@ shinyServer(function(input,output) {
     return(SSD_list)
   })
   
+  # calculate stop reaction time (SRT)
+  # SRT = stop signal delay + stop signal reaction time
   SRT <- reactive({
     SSD_list <- SSD()
     SRT_list <- list(
@@ -52,6 +58,7 @@ shinyServer(function(input,output) {
     return(SRT_list)
   })
   
+  # calculate inhibition 
   Inhib <- reactive({ 
     SSD_list <- SSD()
     SRT_list <- SRT()
@@ -75,14 +82,8 @@ shinyServer(function(input,output) {
     return(Inhibitions)
   })    
   
-  ##currentDist, reactive normal distribution  
-  currentDist <- reactive({
-    dist <- rnorm(n = input$obs, mean = input$mean, sd = input$std)
-    return(dist)
-  })
-  
   #######################################
-  
+  # if else statement dependent on input choice from dropdown menu
   output$plots <- renderPlot({
     input$calcButton
   
@@ -119,21 +120,13 @@ shinyServer(function(input,output) {
     }
   })
   
-  
-  # returns positions of values that need to be graphed 
-  find_positions <- function () {
-    difference <- unlist(variablesFromInput()[5:10], use.names=FALSE)
-    positions <- c()
-    count = 1
-    for (dif in difference) {
-      if (dif != 1) {
-        positions <- c(positions, count)
-      }
-      count = count + 1
-    }
-    return(positions)
-  }
-  
+  # create the current distribution as a reactive normal plot 
+  currentDist <- reactive({
+    dist <- rnorm(n = input$obs, mean = input$mean, sd = input$std)
+    return(dist)
+  })
+
+  # returns histograms with inhibition lines overlaid
   histograms <- function () {
     SSD_list <- SSD()
     SRT_list <- SRT()
@@ -144,13 +137,13 @@ shinyServer(function(input,output) {
     count = 1
     for (pos in positions) {
       add_inhib_list[[count]] <- add_inhibition(dist,SRT_list[[pos]],SSD_list[[pos]])
-
       add_inhib_list[[count]] <- make_inh_hist(add_inhib_list[[count]], SRT_list[[pos]],SSD_list[[pos]],input$mean,input$ssrt)
       count = count + 1
     }
     return(add_inhib_list)
   }
   
+  # returns sigmoidal fit graph 
   sigmoidal_fit <- function(cond) {
     pos <- find_positions()
     pos_early <- pos + 6
@@ -160,11 +153,9 @@ shinyServer(function(input,output) {
     Inhibition_normal <- Inhibitions[pos]
     Inhibition_early <- Inhibitions[pos_early]
     time <- seq(-1000,0,1)
-
     df <- data.frame(delay = time, inhib = (1-pnorm(time+input$mean+input$ssrt,
                                                           input$mean,
                                                           input$std))*100)
-    
     df1 <- data.frame(type = rep(c("normal"),each=length(pos)),
                       delay = actual_diff,
                       inhib = Inhibition_normal)
@@ -174,7 +165,7 @@ shinyServer(function(input,output) {
     df_points <- rbind(df1,df2)
     print(df_points)
     
-    ###plot sigmoidal curve 
+    #plot sigmoidal curve 
     sigmoid_fit <- ggplot(data=df, aes(x=delay, y=inhib)) +
       xlab("SSD(ms before mRT)") +
       ggtitle("Inhibition curve") +
@@ -186,9 +177,21 @@ shinyServer(function(input,output) {
     {
       sigmoid_fit <- sigmoid_fit + annotation_custom(grob=g,xmin=-1000,xmax=-750,ymin=0,ymax=95)
     }
-  
     return(sigmoid_fit)
-    
   }
   
+  # returns positions of delay values that need to be graphed 
+  find_positions <- function () {
+    difference <- unlist(variablesFromInput()[5:10], use.names=FALSE)
+    positions <- c()
+    count = 1
+    for (dif in difference) {
+      #if delay values is set to 1, then don't graph that delay
+      if (dif != 1) {
+        positions <- c(positions, count)
+      }
+      count = count + 1
+    }
+    return(positions)
+  }
 })
