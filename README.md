@@ -8,8 +8,8 @@ reaction time (SSRT) impact the model. You can view up to six delays at once. Se
 slider to 1 will exclude that delay from the graphs.
 
 ## Further Readings
-Logan, G.D. and Cowan, W.B. (1984) On the Ability to Inhibit Thought and Action: A Theory of an Act of Control. Psychological Review, Vol. 91, No. 3, 295-327
-Eagle, D.M., Bari, A., & Robbins, T.W. (2008) The neuropsychopharmacology of action inhibition: cross-species translation of the stop-signal and go/no-go tasks. Psychopharmacology 199:439–456. DOI: 10.1007/s00213-008-1127-6
+* Logan, G.D. and Cowan, W.B. (1984) On the Ability to Inhibit Thought and Action: A Theory of an Act of Control. Psychological Review, Vol. 91, No. 3, 295-327
+* Eagle, D.M., Bari, A., & Robbins, T.W. (2008) The neuropsychopharmacology of action inhibition: cross-species translation of the stop-signal and go/no-go tasks. Psychopharmacology 199:439–456. DOI: 10.1007/s00213-008-1127-6
 
 ## Getting Started
 1. Run in web browser from this link
