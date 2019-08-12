@@ -21,9 +21,13 @@ https://two-horse-race-model.shinyapps.io/two-horse-race-model/
 * R software for #2
 
 # Authors
-* Karen Gu
+* Karen Gu 
 * Alican Caglayan
 
 # Acknowledgements
 * Winter Lab at Humboldt Universitat zu Berlin
 * DAAD RISE Program for funding this project
+
+# Support
+Karen Gu - kgu30@gatech.edu
+Alican Caglayan - alican.caglayan@hu-berlin.de
