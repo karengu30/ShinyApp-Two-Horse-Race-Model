@@ -175,11 +175,18 @@ shinyServer(function(input,output) {
       geom_line() +
       geom_point(data=df_points, aes(group=early_trials, color=early_trials))+
       labs(colour = "Early trials")
-      
-    g <- tableGrob(df_points)
+    
+    myt1 <- ttheme_default(core = list(bg_params=list(fill=c("lightpink"))))
+    myt2 <- ttheme_default(core = list(bg_params=list(fill=c("cadetblue1"))))
+    
+    g1 <- tableGrob(df1, theme=myt1)
+    g2 <- tableGrob(df2, theme=myt2)
+
     if (cond == TRUE)
     {
-      sigmoid_fit <- sigmoid_fit + annotation_custom(grob=g,xmin=-1250,xmax=-1000,ymin=0,ymax=95)
+      sigmoid_fit <- sigmoid_fit + 
+        annotation_custom(grob=g1,xmin=-1250,xmax=-1000,ymin=47,ymax=95)+
+        annotation_custom(grob=g2,xmin=-1250,xmax=-1000,ymin=0,ymax=46)
     }
     return(sigmoid_fit)
   }
