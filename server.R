@@ -6,8 +6,8 @@ library(cowplot)
 library(sicegar)
 
 ##source necessary functions
-source("add_inhibition_1.R")
-source("make_inh_hist_1.R")
+source("add_inhibition.R")
+source("make_inh_hist.R")
 
 #Simulation and Shiny Application of Two Horse Race Model for the stop-signal task
 shinyServer(function(input,output) {
