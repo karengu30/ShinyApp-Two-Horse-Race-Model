@@ -92,7 +92,7 @@ shinyServer(function(input,output) {
     {
       isolate({
       dist <- currentDist()
-      qplot(dist)
+      qplot(dist, main="Histogram of reaction times")
       })
     }
     else if (input$graph == "Histogram with Inhibition")
@@ -156,10 +156,10 @@ shinyServer(function(input,output) {
     df <- data.frame(delay = time, inhib = (1-pnorm(time+input$mean+input$ssrt,
                                                           input$mean,
                                                           input$std))*100)
-    df1 <- data.frame(type = rep(c("normal"),each=length(pos)),
+    df1 <- data.frame(early_trials = rep(c("Include"),each=length(pos)),
                       delay = actual_diff,
                       inhib = Inhibition_normal)
-    df2 <- data.frame(type = rep(c("early"),each=length(pos)),
+    df2 <- data.frame(early_trials = rep(c("Exlcude"),each=length(pos)),
                       delay = actual_diff,
                       inhib = Inhibition_early)
     df_points <- rbind(df1,df2)
@@ -170,12 +170,16 @@ shinyServer(function(input,output) {
       xlab("SSD(ms before mRT)") +
       ggtitle("Inhibition curve") +
       ylab("percentage correct stop trials(%)") +
+      xlim(-1250,0) +
+      ylim(0,100) +
       geom_line() +
-      geom_point(data=df_points, aes(group=type, color=type))
+      geom_point(data=df_points, aes(group=early_trials, color=early_trials))+
+      labs(colour = "Early trials")
+      
     g <- tableGrob(df_points)
     if (cond == TRUE)
     {
-      sigmoid_fit <- sigmoid_fit + annotation_custom(grob=g,xmin=-1000,xmax=-750,ymin=0,ymax=95)
+      sigmoid_fit <- sigmoid_fit + annotation_custom(grob=g,xmin=-1250,xmax=-1000,ymin=0,ymax=95)
     }
     return(sigmoid_fit)
   }
