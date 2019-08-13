@@ -5,7 +5,7 @@ Based on the model, this simulation shows how mean reaction time (mRT), standard
 ### “Type of graph” drop down menu has 4 options:
 1. **Histogram**: View a histogram of the simulated reaction times for an individual by using mRT, SD, and number of observations as parameters
 2. **Histogram with Inhibition**: Fits stop signal delay and stopping time to the histogram by using SSRT and stop signal delay as additional parameters. These graphs show the proportion of early responses before stop signal (“early,” blue), responses after stop signal and before the stopping time (“responded,” green), and responses after the stopping time (“inhibited,” red). 
-3. **Sigmoidal Fit**: Fits calculated inhibition probabilities of different delays to an inhibition curve. Two types of inhibitions are calculated: “early” which excludes the early trials and “normal” which includes the early trials. 
+3. **Sigmoidal Fit**: Fits calculated inhibition probabilities of different delays to an inhibition curve. Two types of inhibitions are calculated: “Exclude” which excludes the early trials and “Include” which includes the early trials. 
 4. **All graphs**: All graphs are shown together 
 
 ## Further Readings
